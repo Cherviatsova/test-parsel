@@ -1,21 +1,52 @@
+// import { fetchComments } from './services/api'; тоже самое
+import HTTPService from './services/api';
+import { LoadMoreBtn } from './services/loadMoreBtn';
+
 const commentList = document.querySelector('.comments');
 const loadMoreBtn = document.querySelector('.load-more');
+// let page = 1;
+// const totalComments = 100;
+// const pageSize = 4;
+// const totalPages = totalComments / pageSize;
 
-fetchComments().then(comments => renderComments(comments));
+const loadMoreBtn = new LoadMoreBtn({
+  selector: '.load-more',
+  className: 'is-hidden',
+  // isHidden: true,
+  onClick() {
+    loadComments();
+  },
+});
 
-loadMoreBtn.addEventListener('click', () =>
-  fetchComments().then(comments => renderComments(comments))
-);
+loadComments().then(() => {
+  loadMoreBtn.show();
+});
+// loadMoreBtn.hide();
 
-function fetchComments() {
-  const url =
-    'https://611560228f38520017a38499.mockapi.io/api/v1/comments?page=1&limit=3';
+// setTimeout(() => {
+//   loadMoreBtn.show();
+// }, 1000);
 
-  return fetch(url).then(response => {
-    if (response.ok) {
-      return response.json();
+// loadMoreBtn.classList.add('is-hidden');
+// loadComments().then(() => {
+//   loadMoreBtn.classList.remove('is-hidden');
+// });
+
+// loadMoreBtn.addEventListener('click', () => {
+//   loadComments().then(() => {
+//     // if (page > totalPages) {
+//     //   loadMoreBtn.classList.add('is-hidden');
+//     // }
+//   });
+// });
+
+function loadComments() {
+  return HTTPService.fetchComments().then(data => {
+    renderComments(data.comments);
+    if (!data.hasNextPage) {
+      loadMoreBtn.hide();
     }
-    throw Error('Not found');
+    // page += 1;
   });
 }
 
@@ -33,5 +64,5 @@ function renderComments(comments) {
     )
     .join('');
 
-  commentList.innerHTML = markup;
+  commentList.insertAdjacentHTML = ('beforeend', markup);
 }
