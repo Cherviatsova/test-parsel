@@ -1,6 +1,6 @@
 // import { fetchComments } from './services/api'; тоже самое
-import HTTPService from './services/api';
-import { LoadMoreBtn } from './services/loadMoreBtn';
+// import HTTPService from './services/api';
+// import { LoadMoreBtn } from './services/loadMoreBtn';
 
 const commentList = document.querySelector('.comments');
 const loadMoreBtn = document.querySelector('.load-more');
