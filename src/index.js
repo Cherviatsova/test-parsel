@@ -5,3 +5,4 @@
 // console.log("Index page log");
 
 import './css/common.css';
+import axios from 'axios';
